@@ -1,0 +1,33 @@
+version: '3.8'
+
+networks:
+  backend:
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.51.1
+    container_name: lab-prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - backend
+
+#  grafana:
+#    image: grafana/grafana
+#    container_name: grafana
+#    restart: always
+#    ports:
+#      - 3003:3003
+#    volumes:
+#      - ./cfg/grafana/provisioning:/etc/grafana/provisioning
+#      - ./cfg/grafana/grafana.ini:/etc/grafana/grafana.ini
+#    env_file:
+#      - ./cfg/grafana/grafana.env
+#
+#  zipkin:
+#    image: openzipkin/zipkin
+#    container_name: zipkin
+#    ports:
+#      - "9411:9411" # Expose the Zipkin UI port

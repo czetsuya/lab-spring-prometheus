@@ -1,0 +1,23 @@
+logging:
+  level:
+    root: info
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: lab-spring-prometheus
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true
