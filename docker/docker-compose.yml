@@ -4,28 +4,39 @@ networks:
   backend:
 
 services:
-  prometheus:
-    image: prom/prometheus:v2.51.1
-    container_name: lab-prometheus
+  spring-app:
+    build:
+      dockerfile: docker/Dockerfile
+      context: ../
     ports:
-      - 9090:9090
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - "8080:8080"
     networks:
       - backend
 
-#  grafana:
-#    image: grafana/grafana
-#    container_name: grafana
-#    restart: always
-#    ports:
-#      - 3003:3003
-#    volumes:
-#      - ./cfg/grafana/provisioning:/etc/grafana/provisioning
-#      - ./cfg/grafana/grafana.ini:/etc/grafana/grafana.ini
-#    env_file:
-#      - ./cfg/grafana/grafana.env
-#
+  prometheus:
+    image: prom/prometheus:v2.51.1
+    container_name: lab-prometheus
+    restart: no
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - backend
+#    extra_hosts:
+#      - 'host.docker.internal:host-gateway'
+
+  grafana:
+    image: grafana/grafana
+    container_name: lab-grafana
+    restart: no
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - backend
+
 #  zipkin:
 #    image: openzipkin/zipkin
 #    container_name: zipkin
